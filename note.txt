@@ -1,2 +1,83 @@
-Craeting required files and folders.
+Defining App Routes For frontend applications
 
+Defining App Routes: Explanation and Example
+In web development, routes define how your application responds to client requests to specific endpoints (URLs). When a user navigates to a URL, the application checks its routes to determine what content to serve or what action to perform.
+
+💡 What is a Route?
+A route typically consists of:
+A path (like /home or /products/:id)
+An HTTP method (like GET, POST, etc. — mainly for backend)
+A handler — a function or component that gets rendered or executed
+
+📍 Frontend (React Router Example)
+In frontend applications (like React), you define routes to display different components depending on the URL.
+
+✅ Example: React Router
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+import Product from './pages/Product';
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/product/:id" element={<Product />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+
+
+🔍 Explanation:
+/ → Renders the Home component.
+/about → Renders the About component.
+/product/:id → Dynamic route; :id is a placeholder (e.g., /product/42).
+
+
+*********************************************8
+FOR BACKEND.
+*******************************************
+
+🧠 Backend (Express.js Example)
+On the backend, routes handle logic and send responses.
+
+✅ Example: Express.js (Node.js)
+
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Welcome to Home Page');
+});
+
+app.get('/about', (req, res) => {
+  res.send('About Page');
+});
+
+app.get('/product/:id', (req, res) => {
+  res.send(`Product ID: ${req.params.id}`);
+});
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+
+
+🔍 Explanation:
+app.get() defines a route for HTTP GET requests.
+/product/:id accesses dynamic values via req.params.id.
+
+
+🧩 Summary
+
+Frontend (React Router)	      Backend (Express.js)
+
+Used to render components	  Used to handle HTTP requests
+URL determines UI shown	      URL + method determine logic
+Uses <Route path="..." />	  Uses app.get('/path', handler)
