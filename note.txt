@@ -1,83 +1,34 @@
-Defining App Routes For frontend applications
+Backend project set up
 
-Defining App Routes: Explanation and Example
-In web development, routes define how your application responds to client requests to specific endpoints (URLs). When a user navigates to a URL, the application checks its routes to determine what content to serve or what action to perform.
+steps.
+1. Navigate to your backend project directory and initialise it by running npm init -y
 
-💡 What is a Route?
-A route typically consists of:
-A path (like /home or /products/:id)
-An HTTP method (like GET, POST, etc. — mainly for backend)
-A handler — a function or component that gets rendered or executed
+2.Install dependencies by running this command  npm i express jsonwebtoken mongoose 
+multer bcryptjs cors dotenv exceljs
 
-📍 Frontend (React Router Example)
-In frontend applications (like React), you define routes to display different components depending on the URL.
+3. set up your server.js file which is your entry file.
 
-✅ Example: React Router
+ Summary of the Entry File (Plain English)
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import About from './pages/About';
-import Product from './pages/Product';
+Loads environment variables using dotenv, like port number or frontend URL.
+Imports needed packages:
+express to create the server
+cors to allow requests from other origins (like frontend)
+path (not used here but useful for file paths)
+Creates the Express app.
+Enables CORS so the frontend (like React) can communicate with this backend.
+Parses JSON in incoming requests.
+Sets up routes (commented out for now) — for auth, users, tasks, etc.
+Starts the server on the given port and logs a message.
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/product/:id" element={<Product />} />
-      </Routes>
-    </Router>
-  );
+4.set up nodemon
+a. run this command npm install --save-dev nodemon
+b. update your package.json file like this
+   "scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
 }
 
-export default App;
+5. 🗂️ Project Structure. write down the files and folders for backend.
 
-
-🔍 Explanation:
-/ → Renders the Home component.
-/about → Renders the About component.
-/product/:id → Dynamic route; :id is a placeholder (e.g., /product/42).
-
-
-*********************************************8
-FOR BACKEND.
-*******************************************
-
-🧠 Backend (Express.js Example)
-On the backend, routes handle logic and send responses.
-
-✅ Example: Express.js (Node.js)
-
-const express = require('express');
-const app = express();
-
-app.get('/', (req, res) => {
-  res.send('Welcome to Home Page');
-});
-
-app.get('/about', (req, res) => {
-  res.send('About Page');
-});
-
-app.get('/product/:id', (req, res) => {
-  res.send(`Product ID: ${req.params.id}`);
-});
-
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
-});
-
-
-🔍 Explanation:
-app.get() defines a route for HTTP GET requests.
-/product/:id accesses dynamic values via req.params.id.
-
-
-🧩 Summary
-
-Frontend (React Router)	      Backend (Express.js)
-
-Used to render components	  Used to handle HTTP requests
-URL determines UI shown	      URL + method determine logic
-Uses <Route path="..." />	  Uses app.get('/path', handler)
+6. 🧪 Run the Server with this command npm run dev
