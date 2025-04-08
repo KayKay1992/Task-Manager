@@ -1,1 +1,23 @@
 Defining User MongoDB Schema.
+
+generating jwt_secret token
+run this code in your terminal
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+64 diferent characters will be generated copy and put in your .env file.
+
+authmiddleware
+//middleware to protect route
+
+Auth middleware checks if a request has a valid JWT token in the Authorization header.
+
+If valid, it decodes the token and attaches the user's info to req.user.
+
+If missing or invalid, it blocks access and returns a "Not authorized" error.
+
+we added admin middleware.
+💡 How It Works:
+Protect middleware ensures the user is authenticated first.
+
+The admin middleware checks if the logged-in user has the role field set to 'admin'.
+
+If the user is not an admin, it responds with a 401 Unauthorized error.
