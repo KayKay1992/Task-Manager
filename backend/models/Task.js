@@ -34,10 +34,10 @@ const taskSchema = mongoose.Schema(
       type: Date,
       required: true,
     },
-    assignedTo: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+    assignedTo: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
     },
     attachements: [{ type: String }],
     todoChecklist: [todoSchema],
