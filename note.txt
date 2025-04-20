@@ -1,23 +1,48 @@
-Defining User MongoDB Schema.
+For export task report controller
 
-generating jwt_secret token
-run this code in your terminal
-node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
-64 diferent characters will be generated copy and put in your .env file.
+📝 10-Line Explanation:
+Fetches all tasks from the database and populates the assignedTo field with the user's name and email.
 
-authmiddleware
-//middleware to protect route
+Creates a new Excel workbook and worksheet using excelJS.
 
-Auth middleware checks if a request has a valid JWT token in the Authorization header.
+Defines the structure of the Excel columns, including headers like title, priority, due date, etc.
 
-If valid, it decodes the token and attaches the user's info to req.user.
+Loops through each task and formats the data, including assigning user details.
 
-If missing or invalid, it blocks access and returns a "Not authorized" error.
+Formats the due date to a readable format (YYYY-MM-DD).
 
-we added admin middleware.
-💡 How It Works:
-Protect middleware ensures the user is authenticated first.
+Sets the correct response headers to trigger a file download in the browser.
 
-The admin middleware checks if the logged-in user has the role field set to 'admin'.
+Writes the Excel workbook directly to the HTTP response stream.
 
-If the user is not an admin, it responds with a 401 Unauthorized error.
+Ensures the response ends after sending the file.
+
+Catches any errors that occur during the export process.
+
+Sends a 500 error message with error details if something goes wrong.
+
+
+
+for export user task controller function
+
+📝 10-Line Explanation:
+Fetches all users from the database and all tasks with their assigned user populated.
+
+Initializes a data map (userTaskMap) for aggregating task stats per user.
+
+Iterates through tasks and increments task counts for the assigned user by status.
+
+Uses excelJS to create a workbook and worksheet for reporting.
+
+Defines headers like user name, email, and counts of each task status.
+
+Adds each user's aggregated task data as a new row in the worksheet.
+
+Sets the correct headers for Excel file download.
+
+Writes the workbook directly to the HTTP response using a stream.
+
+Ends the response to ensure the file is downloaded properly.
+
+Catches and handles any errors that occur during the export process.
+
