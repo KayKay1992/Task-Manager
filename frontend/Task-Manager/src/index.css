@@ -16,3 +16,10 @@
     }
 }
 
+.input-box{
+    @apply w-full flex justify-between gap-3 text-sm text-black bg-slate-100/50 rounded px-4 py-3  mb-4 mt-3 border border-slate-200 outline-none
+}
+
+.btn-primary{
+    @apply w-full text-sm font-medium text-white bg-orange-500 shadow-lg shadow-amber-200/10 p-[10px] rounded-md my-1 hover:bg-pink-700 hover:text-amber-50 cursor-pointer
+}
