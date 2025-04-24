@@ -3,6 +3,7 @@ import AuthLayout from "../../components/layouts/AuthLayout";
 import ProfilePhotoSelector from "../../components/inputs/ProfilePhotoSelector";
 import Input from "../../components/inputs/Input";
 import { Link } from "react-router-dom";
+import { validateEmail } from "../../utils/helper";
 
 const SignUp = () => {
   const [profilePic, setProfilePic] = useState(null);
@@ -31,6 +32,7 @@ const SignUp = () => {
     setError("");
 
     //SignUp API call
+    try{}catch(error){}
   };
   return (
     <AuthLayout>
