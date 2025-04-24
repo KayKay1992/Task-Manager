@@ -1,17 +1,14 @@
+Integrating axiosInstance for reuseable http requests
 
-Integrating API_PATHS
+Sure! Here's a 10-line explanation of the code:
 
-Sure! Here's a 10-line explanation of your code:
-
-1. `BASE_URL` defines the base server address for API requests, useful for setting the root endpoint.
-2. `API_PATHS` is an object that organizes all the API routes of the app in a structured way.
-3. `AUTH` section contains endpoints for user registration, login, and fetching the profile of the logged-in user.
-4. `USERS` section includes routes for admins to manage user data like retrieving, creating, updating, or deleting users.
-5. Some routes like `GET_USER_BY_ID` and `UPDATE_USER` use functions to insert dynamic user IDs into the path.
-6. `TASKS` section groups endpoints for managing tasks, like creating, updating, fetching, and deleting them.
-7. It also includes specific task operations like updating status and managing task checklists.
-8. `REPORTS` section provides export features, allowing admins to download task or user reports in Excel format.
-9. `IMAGE` section includes an endpoint for image upload, likely for user profile pictures or task attachments.
-10. This modular and clean setup helps maintain and scale the frontend app when interacting with the backend APIs.
-
-Let me know if you want this rewritten in simpler terms or more technically!
+1. Imports `axios` and a custom `BASE_URL` to set up a reusable HTTP client.  
+2. Creates an `axiosInstance` with a 10-second timeout and default headers for JSON requests.  
+3. The request interceptor adds an `Authorization` header if a token exists in localStorage.  
+4. This allows sending authenticated requests using the token saved after login.  
+5. If no token is found, the request proceeds without the `Authorization` header.  
+6. The response interceptor checks for error responses from the server.  
+7. If a 401 (unauthorized) error occurs, the user is redirected to the login page.  
+8. If a 500 (server error) occurs, an error message is logged in the console.  
+9. If the request times out, it logs a timeout message.  
+10. Finally, the customized `axiosInstance` is exported for use throughout the app.
