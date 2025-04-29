@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { useUserAuth } from '../../hooks/useUserAuth'
+import { UserContext } from '../../context/userContext'
 
 const UserDashboard = () => {
+  useUserAuth()
+
+   const {user} = useContext(UserContext)
   return (
-    <div>User Dashboard</div>
+    <div>Dashboard {JSON.stringify(user)}</div>
   )
 }
 
