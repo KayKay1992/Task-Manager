@@ -1,13 +1,18 @@
 import React, { useContext } from 'react'
 import { useUserAuth } from '../../hooks/useUserAuth'
 import { UserContext } from '../../context/userContext';
+import DashboardLayout from '../../components/layouts/DashboardLayout';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   useUserAuth();
 
   const {user} = useContext(UserContext)
+
+  const navigate = useNavigate()
+  
   return (
-    <div>Dashboard {JSON.stringify}</div>
+    <DashboardLayout activeMenu="Dashboard">Dashboard</DashboardLayout>
   )
 }
 
