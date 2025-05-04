@@ -1,61 +1,20 @@
-CREATING TASK DISTRIBUTION SECTION (PIE CHART)
+CREATING  Task Priority Levels DISTRIBUTION SECTION (BAR CHART)
 
+explaing the task priority rendering in dashboard.jsx
+This JSX code defines a card-style container for displaying task priority data.
+Inside the .card div, a flexbox layout aligns the title and potential future elements horizontally.
+The <h5> element displays the title "Task Priority Levels" with medium font
 
-Here’s a 10-line explanation of the prepareChartData function: In ADMINDASHBOARD 
-file
-The function prepareChartData prepares data for rendering pie and bar charts.
+***************************************************************
+Explaining the customBarchart component
 
-It extracts taskDistribution and taskPriorityLevels from the input data object.
-
-taskDistributionData is an array of loan status counts (e.g., active, approved).
-
-Default values of 0 are used if any status count is missing or undefined.
-
-This array is passed to setPieChartData to update the pie chart state.
-
-taskPriorityLevels is another array built from different loan types (e.g., low, high).
-
-It also uses fallback 0 values where needed to avoid undefined errors.
-
-This array is passed to setBarChartData to update the bar chart state.
-
-The function ensures both charts reflect the most recent loan data breakdown.
-
-It's typically called after fetching dashboard or analytics data.
-
-*****************************************************
-Render the piechart block in the ADMINDASHBOARD
-This block renders a card section titled "Loan Distribution" with a header.
-
-Inside the card, it uses a custom pie chart component (CustomPieChart) to visualize loan status data.
-
-The chart is given data from pieChartData and color values from the COLORS array.
-
-
-
-*****************************************************
-Explain custom legend componenet 
-
-1. This component `CustomLegend` displays a custom legend for charts using the `payload` prop.  
-2. It wraps legend items in a flex container, allowing them to wrap and space out evenly.  
-3. Each legend item shows a small colored circle representing the chart data color.  
-4. Next to the circle, it displays the corresponding label from `entry.value`.  
-5. The component is typically used with chart libraries like Recharts to replace the default legend.
-
-***********************************************************
-Explain custompiechart component
-
-1. `CustomPieChart` renders a donut-style pie chart using Recharts components inside a responsive container.  
-2. The `Pie` uses `data`, with `count` as the value and `status` as the label, and is styled with inner and outer radii for a donut effect.  
-3. Each `Cell` is filled with a color from the `colors` array, cycling through if there are more slices than colors.  
-4. A custom tooltip and custom legend are used to display extra info and styling.  
-5. The chart is fully responsive and fits its parent container.
-
-*********************************************************
-Explain customTooltip component
-
-1. `CustomTooltip` is a React component used in charts to display detailed info when hovering over a data point.  
-2. It checks if the tooltip is active and if valid `payload` data is available.  
-3. If true, it shows a styled tooltip with the data name and value (e.g., status and count).  
-4. The tooltip is styled using Tailwind CSS for a clean UI.  
-5. If not active or missing data, it returns `null` (renders nothing).
+This React component renders a customizable bar chart using the `recharts` library.  
+It accepts `data` as a prop and dynamically colors each bar based on the `priority` level using the `getBarColor` function.  
+The `CustomToolTip` function displays a styled tooltip showing the priority and count when hovering over a bar.  
+The `ResponsiveContainer` ensures the chart adapts to its parent container's size, making it mobile-friendly.  
+The `BarChart` includes X and Y axes, a transparent cursor, and rounded bars with individual coloring via the `<Cell>` component.  
+Grid lines are disabled for a cleaner appearance (`stroke='none'`).  
+Tooltips are styled and shown only when active and payload exists.  
+Each bar's height corresponds to a `count` value from the data.  
+The legend is omitted for simplicity, but could be added for clarity.  
+This chart is ideal for visualizing priority-based metrics like task urgency distribution.
