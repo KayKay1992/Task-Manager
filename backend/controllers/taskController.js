@@ -6,11 +6,11 @@ const Task = require("../models/Task");
 //@access Private
 const getTasks = async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status } = req.query; // Changed from req.body to req.query
     let filter = {};
 
-    if (status) {
-      filter.status;
+    if (status && status.trim() !== '') {
+      filter.status = status; // Actually assign the status value
     }
 
     let tasks;
@@ -21,13 +21,16 @@ const getTasks = async (req, res) => {
         "name email profileImageUrl"
       );
     } else {
-      tasks = await Task.find({ ...filter, assignedTo: req.user._id }).populate(
+      tasks = await Task.find({ 
+        ...filter, 
+        assignedTo: req.user._id 
+      }).populate(
         "assignedTo",
         "name email profileImageUrl"
       );
     }
 
-    //Add completed todoChecklistcount to each task.
+    // Add completed todoChecklist count to each task
     tasks = await Promise.all(
       tasks.map(async (task) => {
         const completedCount = task.todoChecklist.filter(
@@ -37,41 +40,36 @@ const getTasks = async (req, res) => {
       })
     );
 
-    //status summary count
-    const allTasks = await Task.countDocuments(
-      req.user.role === "admin" ? {} : { assignedTo: req.user._id }
-    );
+    // Status summary count
+    const baseFilter = req.user.role === "admin" ? {} : { assignedTo: req.user._id };
 
-    const pendingTasks = await Task.countDocuments({
-      ...filter,
-      status: "Pending",
-      ...(req.user.role !== "admin" && { assignedTo: req.user._id }),
+    const allTasks = await Task.countDocuments(baseFilter);
+    const pendingTasks = await Task.countDocuments({ 
+      ...baseFilter,
+      status: "Pending" 
     });
-
-    const inProgressTasks = await Task.countDocuments({
-      ...filter,
-      status: "In Progress",
-      ...(req.user.role !== "admin" && { assignedTo: req.user._id }),
+    const inProgressTasks = await Task.countDocuments({ 
+      ...baseFilter,
+      status: "In Progress" 
     });
-
-    const completedTasks = await Task.countDocuments({
-      ...filter,
-      status: "Completed",
-      ...(req.user.role !== "admin" && { assignedTo: req.user._id }),
+    const completedTasks = await Task.countDocuments({ 
+      ...baseFilter,
+      status: "Completed" 
     });
 
     res.json({
       tasks,
-      statusSummary: {
+      StatusSummary: {  // Changed to match frontend expectation
         all: allTasks,
-        pendingTasks,
-        inProgressTasks,
-        completedTasks,
-      },
+        PendingTasks: pendingTasks,  // Changed to match frontend
+        InProgressTasks: inProgressTasks,  // Changed to match frontend
+        CompletedTasks: completedTasks  // Changed to match frontend
+      }
     });
   } catch (error) {
+    console.error("Error in getTasks:", error);
     res.status(500).json({
-      messaage: "Server Error",
+      message: "Server Error",
       error: error.message,
     });
   }
