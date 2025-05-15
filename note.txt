@@ -1,13 +1,14 @@
-Calling Get Task details by Id API
+Integrating Update Task API
 
+Here's a 10-line explanation of the `updateTask` function:
 
-1. This code defines an async function `getTaskByID` that fetches task details by ID.  
-2. It uses `axiosInstance` to make a GET request to an API endpoint with the given `taskId`.  
-3. If the response contains data, it stores the task info in `currentTask` using `setCurrentTask`.  
-4. It updates `taskData` state with structured task details like title, description, and priority.  
-5. The `dueDate` is formatted using `moment` for consistent display.  
-6. `assignedTo` maps assigned user IDs, defaulting to an empty array if none exist.  
-7. `todoChecklist` extracts checklist item texts, defaulting to an empty array.  
-8. `attachments` includes task attachments or an empty array if none.  
-9. Errors during fetching are logged to the console.  
-10. A `useEffect` hook triggers `getTaskByID` whenever `taskId` changes, ensuring data reloads when the ID updates.
+1. Starts async function to update a task and sets loading state to true.  
+2. Maps through `taskData.todoChecklist` to preserve completion status of existing tasks.  
+3. For each item, checks if it existed in the original task (`currentTask`).  
+4. Creates new checklist items keeping completed status if task existed, defaulting to false otherwise.  
+5. Sends PUT request to update task endpoint with modified task data.  
+6. Converts dueDate to ISO string format for API compatibility.  
+7. Includes the processed checklist in the update payload.  
+8. Shows success toast notification if update succeeds.  
+9. Catches and logs any errors during the process.  
+10. Finally turns off loading state whether successful or not.
