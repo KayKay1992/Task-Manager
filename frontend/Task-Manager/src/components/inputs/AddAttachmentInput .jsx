@@ -22,7 +22,7 @@ const AddAttachmentInput  = ({attachments, setAttachments}) => {
   return (
     <div>
         {attachments.map((item, index)=> (
-            <div className="flex justify-between bg-gray-50 border border-gray-100 px-3 py-2 rounded-md mb-3 mt-4" key={item} >
+            <div className="flex justify-between bg-gray-50 border border-gray-100 px-3 py-2 rounded-md mb-3 mt-4" key={`${item}-${index}`} >
                 <div className="flex-1 flex items-center gap-3 border border-gray-100">
                     <LuPaperclip className='text-gray-400'/>
                     <p className="text-xs text-black">{item}</p>

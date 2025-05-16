@@ -89,10 +89,10 @@ const TaskCard = ({ title, description, priority, status, progress, createdAt, d
 
             <div className="flex items-center justify-between mt-3 px-4">
                 <AvatarGroup avatars={assignedTo || []} />
-                {attachmentCount >= 0 && (
+                {safeAttachmentCount > 0 && (
                     <div className="flex items-center gap-2 bg-blue-50 px-2.5 py-1.5 rounded-lg">
                         <LuPaperclip className="text-blue-600" />
-                        <span className="text-xs text-gray-900">{attachmentCount}</span>
+                        <span className="text-xs text-gray-900">{safeAttachmentCount}</span>
                     </div>
                 )}
             </div>
