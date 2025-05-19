@@ -1,39 +1,18 @@
-Calling Get All Users Details Api and creating User Card UI
+Download All Users Task Report.
 
-Explaining the Manage users component.
-
-Here's a concise 15-line summary of the `ManageUsers` component:
-
-1. Displays team members in a dashboard layout  
-2. Fetches all users on component mount via API  
-3. Stores user data in `allUsers` state  
-4. Has a download report button (unimplemented)  
-5. Uses `axiosInstance` for authenticated API calls  
-6. Implements error handling for API requests  
-7. Shows responsive grid layout (1-3 columns)  
-8. Renders each user in a `UserCard` component  
-9. Includes spreadsheet icon for report download  
-10. Active menu highlights "Team Members"  
-11. Clean UI with proper spacing (margin/padding)  
-12. Responsive header with title + button  
-13. Uses React hooks (useState, useEffect)  
-14. Unique keys for mapped components  
-15. Exports as default dashboard page component  
-
-This component essentially manages and displays all team members in a card-based layout with optional reporting functionality.
+Explaining the handleDownloadReport functionality
 
 
+1. **Function Purpose**: Downloads a user report as an Excel file from the backend.  
+2. **API Call**: Uses `axiosInstance` to fetch data from `EXPORT_USERS` endpoint with `responseType: "blob"` for binary data.  
+3. **Blob Handling**: Converts the response into a Blob (binary object) for file creation.  
+4. **URL Creation**: Generates a temporary URL for the Blob using `window.URL.createObjectURL()`.  
+5. **Link Setup**: Creates an invisible `<a>` tag to trigger the download programmatically.  
+6. **File Naming**: Sets the filename to `users_report.xlsx` via the `download` attribute.  
+7. **DOM Manipulation**: Temporarily adds the link to the document body to enable clicking.  
+8. **Trigger Download**: Simulates a click on the link to start the download.  
+9. **Cleanup**: Removes the link and revokes the Blob URL to free memory.  
+10. **Error Handling**: Logs errors and shows a toast notification if the download fails.
 
-*********************************************************
-Explaining the user card component.
 
-Here's a 6-line explanation of the code:
-
-1. **UserCard Component**: Displays a user profile with image, name, email, and task statistics in a clean layout.  
-2. **Profile Section**: Shows circular avatar, name (bold), and email (gray) in a horizontal flex layout.  
-3. **Task Stats**: Uses three `StatCard` components to display counts of pending/in-progress/completed tasks.  
-4. **StatCard Subcomponent**: Conditionally styles task counts with different colors based on status (purple/cyan/indigo).  
-5. **Responsive Design**: Uses Tailwind CSS for styling (rounded avatar, padding, flex gaps, and responsive text sizes).  
-6. **Default Values**: Safely handles missing data with optional chaining (`?.`) and fallback values (`|| 0`).  
-
-The code creates a reusable card that visually summarizes user information and task progress status.
+little bug was fixed in exportUsersReport Modify the exportUsersReport function to handle assignedTo as an array. The task processing loop should iterate over the assignedTo array and increment counts for each assigned user.

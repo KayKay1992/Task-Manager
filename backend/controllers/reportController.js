@@ -71,23 +71,22 @@ const exportTasksReport = async (req, res) => {
 //@desc export user-task as excel file
 //@route GET/api/reports/export/users
 //access private(admin)
+
+const mongoose = require('mongoose');
+
+
 const exportUsersReport = async (req, res) => {
   try {
-    // 1. FETCH USERS AND THEIR TASKS
-    // Fetch all users (lean for performance), select name and email
-    const users = await User.find().select("name email").lean();
-
-    // Fetch all tasks and populate 'assignedTo' field
-    const userTasks = await Task.find().populate("assignedTo", "name email");
+    // 1. FETCH USERS
+    const users = await User.find().select('_id name email').lean();
+    console.log(`Fetched ${users.length} users`);
 
     // 2. MAP TO STORE AGGREGATED USER TASK DATA
     const userTaskMap = {};
-
-    // Initialize each user's task stats
     users.forEach((user) => {
-      userTaskMap[user._id] = {
-        name: user.name,
-        email: user.email,
+      userTaskMap[user._id.toString()] = {
+        name: user.name || 'Unknown',
+        email: user.email || 'N/A',
         taskCount: 0,
         pendingTasks: 0,
         inProgressTasks: 0,
@@ -95,64 +94,104 @@ const exportUsersReport = async (req, res) => {
       };
     });
 
-    // 3. PROCESS EACH TASK AND AGGREGATE COUNTS
-    userTasks.forEach((task) => {
-      const assignedUser = task.assignedTo;
-      if (assignedUser && userTaskMap[assignedUser._id]) {
-        userTaskMap[assignedUser._id].taskCount += 1;
+    // 3. FETCH AND PROCESS TASKS
+    const tasks = await Task.find().populate({
+      path: 'assignedTo',
+      select: 'name email',
+    }).lean();
+    console.log(`Fetched ${tasks.length} tasks`);
 
-        if (task.status === "Pending") {
-          userTaskMap[assignedUser._id].pendingTasks += 1;
-        } else if (task.status === "In Progress") {
-          userTaskMap[assignedUser._id].inProgressTasks += 1;
-        } else if (task.status === "Completed") {
-          userTaskMap[assignedUser._id].completedTasks += 1;
-        }
+    tasks.forEach(task => {
+      console.log(`Task ${task._id}: status=${task.status}, assignedTo=${task.assignedTo ? task.assignedTo.map(u => u._id).join(', ') : 'null'}`);
+      
+      // Skip tasks with no assigned users
+      if (!task.assignedTo || !Array.isArray(task.assignedTo) || task.assignedTo.length === 0) {
+        console.warn(`Skipping task ${task._id}: No valid assignedTo`);
+        return;
       }
+
+      // Process each user in the assignedTo array
+      task.assignedTo.forEach(user => {
+        if (!user || !mongoose.Types.ObjectId.isValid(user._id)) {
+          console.warn(`Skipping invalid user in task ${task._id}`);
+          return;
+        }
+
+        const userId = user._id.toString();
+        if (userTaskMap[userId]) {
+          userTaskMap[userId].taskCount += 1;
+          console.log(`Incremented taskCount for user ${userId}: ${userTaskMap[userId].taskCount}`);
+
+          const status = task.status ? task.status.toLowerCase() : '';
+          console.log(`Task ${task._id} status: ${status}`);
+          switch (status) {
+            case 'pending':
+              userTaskMap[userId].pendingTasks += 1;
+              console.log(`Incremented pendingTasks for user ${userId}: ${userTaskMap[userId].pendingTasks}`);
+              break;
+            case 'in progress':
+              userTaskMap[userId].inProgressTasks += 1;
+              console.log(`Incremented inProgressTasks for user ${userId}: ${userTaskMap[userId].inProgressTasks}`);
+              break;
+            case 'completed':
+              userTaskMap[userId].completedTasks += 1;
+              console.log(`Incremented completedTasks for user ${userId}: ${userTaskMap[userId].completedTasks}`);
+              break;
+            default:
+              console.warn(`Task ${task._id} has invalid status: ${task.status}`);
+          }
+        } else {
+          console.warn(`User ${userId} not found in userTaskMap for task ${task._id}`);
+        }
+      });
     });
+
+    console.log('User Task Map:', JSON.stringify(userTaskMap, null, 2));
 
     // 4. PREPARE EXCEL SHEET
     const workbook = new excelJS.Workbook();
-    const worksheet = workbook.addWorksheet("User Task Report");
+    const worksheet = workbook.addWorksheet('User Task Report');
 
-    // Define headers/columns
     worksheet.columns = [
-      { header: "User Name", key: "name", width: 30 },
-      { header: "Email", key: "email", width: 40 },
-      { header: "Total Assigned Tasks", key: "taskCount", width: 20 },
-      { header: "Pending Tasks", key: "pendingTasks", width: 20 },
-      { header: "In Progress Tasks", key: "inProgressTasks", width: 20 },
-      { header: "Completed Tasks", key: "completedTasks", width: 20 },
+      { header: 'User Name', key: 'name', width: 30 },
+      { header: 'Email', key: 'email', width: 40 },
+      { header: 'Total Assigned Tasks', key: 'taskCount', width: 20 },
+      { header: 'Pending Tasks', key: 'pendingTasks', width: 20 },
+      { header: 'In Progress Tasks', key: 'inProgressTasks', width: 20 },
+      { header: 'Completed Tasks', key: 'completedTasks', width: 20 },
     ];
 
-    // Add a row per user
+    worksheet.getRow(1).font = { bold: true };
+    worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
+
     Object.values(userTaskMap).forEach((user) => {
       worksheet.addRow(user);
     });
 
-    // 5. SET HEADERS FOR DOWNLOAD AND STREAM FILE
+    // 5. SET HEADERS FOR DOWNLOAD
     res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     );
     res.setHeader(
-      "Content-Disposition",
+      'Content-Disposition',
       'attachment; filename="users_report.xlsx"'
     );
 
-    // Stream Excel workbook to the response
     await workbook.xlsx.write(res);
-    res.end(); // Ensure the response ends after writing the file
 
   } catch (error) {
-    // 6. ERROR HANDLING
-    console.error("User Export Error:", error);
-    res.status(500).json({
-      message: "Error exporting users",
-      error: error.message,
-    });
+    console.error('User Export Error:', error.stack);
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error exporting users',
+        error: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+      });
+    }
   }
 };
+
 
 module.exports = {
   exportTasksReport,
