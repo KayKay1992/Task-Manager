@@ -1,8 +1,6 @@
 Download All Users Task Report.
 
 Explaining the handleDownloadReport functionality
-
-
 1. **Function Purpose**: Downloads a user report as an Excel file from the backend.  
 2. **API Call**: Uses `axiosInstance` to fetch data from `EXPORT_USERS` endpoint with `responseType: "blob"` for binary data.  
 3. **Blob Handling**: Converts the response into a Blob (binary object) for file creation.  
