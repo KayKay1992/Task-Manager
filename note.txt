@@ -1,33 +1,39 @@
-Integrating Delete Task API
+Calling Get All Users Details Api and creating User Card UI
 
-Here’s a concise 10-line explanation of the `deleteTask` function:  
+Explaining the Manage users component.
 
-1. **Async Function**: `deleteTask` is an asynchronous function for deleting a task.  
-2. **API Call**: Uses `axiosInstance.delete()` to send a request to the `DELETE_TASK` endpoint with the `taskId`.  
-3. **Success Handling**: On success, it closes the delete alert (`setOpenDeleteAlert(false)`).  
-4. **Toast Notification**: Shows a success toast message: *"Task details deleted successfully"*.  
-5. **Navigation**: Redirects to `/admin/tasks` after deletion.  
-6. **Error Handling**: Wrapped in a `try-catch` block to catch errors.  
-7. **Error Logging**: Logs errors to the console with detailed error messages.  
-8. **Error Response**: Prioritizes `error.response.data.message`, falling back to `error.message`.  
-9. **No State Update on Error**: Fails silently (no UI feedback, just logging).  
-10. **Axios Instance**: Uses a predefined `axiosInstance` for consistent API requests (e.g., with auth headers).  
+Here's a concise 15-line summary of the `ManageUsers` component:
 
-This function ensures secure task deletion with user feedback and error logging.
+1. Displays team members in a dashboard layout  
+2. Fetches all users on component mount via API  
+3. Stores user data in `allUsers` state  
+4. Has a download report button (unimplemented)  
+5. Uses `axiosInstance` for authenticated API calls  
+6. Implements error handling for API requests  
+7. Shows responsive grid layout (1-3 columns)  
+8. Renders each user in a `UserCard` component  
+9. Includes spreadsheet icon for report download  
+10. Active menu highlights "Team Members"  
+11. Clean UI with proper spacing (margin/padding)  
+12. Responsive header with title + button  
+13. Uses React hooks (useState, useEffect)  
+14. Unique keys for mapped components  
+15. Exports as default dashboard page component  
+
+This component essentially manages and displays all team members in a card-based layout with optional reporting functionality.
 
 
-***********************************************************
-for modal component
 
-1. **Modal Component**: Renders a popup (`Modal`) when `openDeleteAlert` is `true` and closes it when `onClose` is triggered.  
-2. **Title & Content**: Displays the title *"Delete Task"* and a confirmation message (*"Are you sure..."*) via the `DeleteAlert` component.  
-3. **Delete Action**: Passes the `deleteTask` function to `DeleteAlert` to execute when the user confirms deletion.  
-4. **State Control**: Toggles visibility using `setOpenDeleteAlert(false)` on close or deletion.
+*********************************************************
+Explaining the user card component.
 
-*************************************************************
-For DeleteAlert component
-1. **Component Definition**: `DeleteAlert` is a reusable React component that displays a confirmation message and a delete button.  
-2. **Props**: Accepts `content` (the confirmation text) and `onDelete` (a function triggered when the button is clicked).  
-3. **Structure**: Renders the `content` in a paragraph and a styled **"Delete"** button aligned to the right.  
-4. **Styling**: The button has red-themed styling (`text-rose-500`, `bg-rose-50`, etc.) for visual emphasis.  
-5. **Export**: The component is exported for use in other parts of the application.
+Here's a 6-line explanation of the code:
+
+1. **UserCard Component**: Displays a user profile with image, name, email, and task statistics in a clean layout.  
+2. **Profile Section**: Shows circular avatar, name (bold), and email (gray) in a horizontal flex layout.  
+3. **Task Stats**: Uses three `StatCard` components to display counts of pending/in-progress/completed tasks.  
+4. **StatCard Subcomponent**: Conditionally styles task counts with different colors based on status (purple/cyan/indigo).  
+5. **Responsive Design**: Uses Tailwind CSS for styling (rounded avatar, padding, flex gaps, and responsive text sizes).  
+6. **Default Values**: Safely handles missing data with optional chaining (`?.`) and fallback values (`|| 0`).  
+
+The code creates a reusable card that visually summarizes user information and task progress status.
