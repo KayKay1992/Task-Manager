@@ -1,16 +1,17 @@
-Download All Users Task Report.
+Download Detailed Task Report.
 
-Explaining the handleDownloadReport functionality
-1. **Function Purpose**: Downloads a user report as an Excel file from the backend.  
-2. **API Call**: Uses `axiosInstance` to fetch data from `EXPORT_USERS` endpoint with `responseType: "blob"` for binary data.  
-3. **Blob Handling**: Converts the response into a Blob (binary object) for file creation.  
-4. **URL Creation**: Generates a temporary URL for the Blob using `window.URL.createObjectURL()`.  
-5. **Link Setup**: Creates an invisible `<a>` tag to trigger the download programmatically.  
-6. **File Naming**: Sets the filename to `users_report.xlsx` via the `download` attribute.  
-7. **DOM Manipulation**: Temporarily adds the link to the document body to enable clicking.  
-8. **Trigger Download**: Simulates a click on the link to start the download.  
-9. **Cleanup**: Removes the link and revokes the Blob URL to free memory.  
-10. **Error Handling**: Logs errors and shows a toast notification if the download fails.
+Here’s a 10-line summary of the `handleDownloadReport` function:
+
+1. The function `handleDownloadReport` is used to download a task report as an Excel file.
+2. It sends a GET request to the `EXPORT_TASKS` API endpoint using Axios.
+3. The `responseType: 'blob'` ensures the file is received in binary format.
+4. A Blob URL is created from the response data using `window.URL.createObjectURL`.
+5. An anchor (`<a>`) element is dynamically created and its `href` set to the Blob URL.
+6. The `download` attribute is set to name the file as `task_details.xlsx`.
+7. The anchor is temporarily added to the document and clicked to start the download.
+8. After the download is triggered, the anchor is removed from the DOM.
+9. The Blob URL is revoked to free up memory.
+10. If there's an error, it logs it and shows a toast error message.
 
 
-little bug was fixed in exportUsersReport Modify the exportUsersReport function to handle assignedTo as an array. The task processing loop should iterate over the assignedTo array and increment counts for each assigned user.
+Backend controller was fixed to enable me get the assignedTo
