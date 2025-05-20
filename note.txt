@@ -1,17 +1,4 @@
-Download Detailed Task Report.
+USER DASHBOARD WITH SUMMARY CARD AND CHARTS
 
-Here’s a 10-line summary of the `handleDownloadReport` function:
+Cpied the adminDashboard to userDashboard component and rename the route. for the task.get_user_dashboard data
 
-1. The function `handleDownloadReport` is used to download a task report as an Excel file.
-2. It sends a GET request to the `EXPORT_TASKS` API endpoint using Axios.
-3. The `responseType: 'blob'` ensures the file is received in binary format.
-4. A Blob URL is created from the response data using `window.URL.createObjectURL`.
-5. An anchor (`<a>`) element is dynamically created and its `href` set to the Blob URL.
-6. The `download` attribute is set to name the file as `task_details.xlsx`.
-7. The anchor is temporarily added to the document and clicked to start the download.
-8. After the download is triggered, the anchor is removed from the DOM.
-9. The Blob URL is revoked to free up memory.
-10. If there's an error, it logs it and shows a toast error message.
-
-
-Backend controller was fixed to enable me get the assignedTo
