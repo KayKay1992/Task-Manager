@@ -18,11 +18,10 @@ import DeleteAlert from "../../components/DeleteAlert";
 
 const CraeteTask = () => {
   const location = useLocation();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   // Safely extract taskId from location.state
   const rawTaskId = location.state?.taskId;
   const taskId = typeof rawTaskId === "object" ? rawTaskId._id : rawTaskId;
-
 
   const [taskData, setTaskData] = useState({
     title: "",
@@ -60,8 +59,6 @@ const CraeteTask = () => {
   const createTask = async () => {
     setLoading(true);
 
-
-
     try {
       const todoList = taskData.todoChecklist?.map((item) => ({
         text: item,
@@ -87,32 +84,31 @@ const CraeteTask = () => {
   const updateTask = async () => {
     setLoading(true);
 
-    try{
-      const todolist = taskData.todoChecklist?.map((item)=> {
+    try {
+      const todolist = taskData.todoChecklist?.map((item) => {
         const prevTodoChecklist = currentTask?.todoChecklist || [];
         const matchedTask = prevTodoChecklist.find((task) => task.text == item);
 
-        return{
+        return {
           text: item,
           completed: matchedTask ? matchedTask.completed : false,
         };
       });
-       const response = await axiosInstance.put(
+      const response = await axiosInstance.put(
         API_PATHS.TASKS.UPDATE_TASK(taskId),
         {
           ...taskData,
           dueDate: new Date(taskData.dueDate).toISOString(),
           todoChecklist: todolist,
         }
-       );
-      
+      );
 
-       toast.success('Task Updated Successfully')
-    }catch(error){
-      console.error('Error creating task:', error)
-      setLoading(false)
-    }finally{
-      setLoading(false)
+      toast.success("Task Updated Successfully");
+    } catch (error) {
+      console.error("Error creating task:", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -151,85 +147,90 @@ const CraeteTask = () => {
     createTask();
   };
 
- const getTaskByID = async (taskId) => {  // Add taskId as parameter
-  try {
-    // 1. Check if taskId is provided
-    if (!taskId) {
-      console.error("No taskId provided");
-      toast.error("No task ID provided");
-      return;
-    }
-
-    // 2. Make API request
-    const response = await axiosInstance.get(
-      API_PATHS.TASKS.GET_TASK_BY_ID(taskId)
-    );
-
-    // 3. Check if response data exists
-    if (!response.data) {
-      throw new Error("No task data received");
-    }
-
-    const taskInfo = response.data;
-
-    // 4. Update state
-    setCurrentTask(taskInfo);
-
-    setTaskData({
-      // Don't spread prevState here as we want to completely replace it
-      title: taskInfo.title || "",
-      description: taskInfo.description || "",
-      priority: taskInfo.priority || "Low",
-      dueDate: taskInfo.dueDate
-        ? moment(taskInfo.dueDate).format("YYYY-MM-DD")
-        : null,
-      assignedTo: taskInfo.assignedTo?.map((item) => item._id) || [],
-      todoChecklist: taskInfo.todoChecklist?.map((item) => item?.text) || [],
-      attachments: taskInfo?.attachments || [],
-    });
-
-  } catch (error) {
-    // 5. Improved error handling
-    console.error("Error fetching task:", error);
-
-    // Show user-friendly error message
-    if (error.response) {
-      if (error.response.status === 404) {
-        toast.error("Task not found");
-      } else if (error.response.status === 400) {
-        toast.error("Invalid task ID");
-      } else {
-        toast.error(`Failed to load task: ${error.response.data?.message || "Server error"}`);
+  const getTaskByID = async (taskId) => {
+    // Add taskId as parameter
+    try {
+      // 1. Check if taskId is provided
+      if (!taskId) {
+        console.error("No taskId provided");
+        toast.error("No task ID provided");
+        return;
       }
-    } else if (error.request) {
-      toast.error("Network error - please try again");
-    } else {
-      toast.error(`Error loading task: ${error.message}`);
-    }
-  }
-};
 
-  //Delete Task
-  const deleteTask = async () => {
-    try{
-      await axiosInstance.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
+      // 2. Make API request
+      const response = await axiosInstance.get(
+        API_PATHS.TASKS.GET_TASK_BY_ID(taskId)
+      );
 
-      setOpenDeleteAlert(false);
-      toast.success('Task details deleted successfully')
-      navigate('/admin/tasks')
-    }catch(error){
-      console.error('Error deleting Task:',
-        error.response?.data?.message || error.message
-      )
+      // 3. Check if response data exists
+      if (!response.data) {
+        throw new Error("No task data received");
+      }
+
+      const taskInfo = response.data;
+
+      // 4. Update state
+      setCurrentTask(taskInfo);
+
+      setTaskData({
+        // Don't spread prevState here as we want to completely replace it
+        title: taskInfo.title || "",
+        description: taskInfo.description || "",
+        priority: taskInfo.priority || "Low",
+        dueDate: taskInfo.dueDate
+          ? moment(taskInfo.dueDate).format("YYYY-MM-DD")
+          : null,
+        assignedTo: taskInfo.assignedTo?.map((item) => item._id) || [],
+        todoChecklist: taskInfo.todoChecklist?.map((item) => item?.text) || [],
+        attachments: taskInfo?.attachments || [],
+      });
+    } catch (error) {
+      // 5. Improved error handling
+      console.error("Error fetching task:", error);
+
+      // Show user-friendly error message
+      if (error.response) {
+        if (error.response.status === 404) {
+          toast.error("Task not found");
+        } else if (error.response.status === 400) {
+          toast.error("Invalid task ID");
+        } else {
+          toast.error(
+            `Failed to load task: ${
+              error.response.data?.message || "Server error"
+            }`
+          );
+        }
+      } else if (error.request) {
+        toast.error("Network error - please try again");
+      } else {
+        toast.error(`Error loading task: ${error.message}`);
+      }
     }
   };
 
- useEffect(() => {
-  if (taskId) {
+  //Delete Task
+  const deleteTask = async () => {
+    try {
+      await axiosInstance.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
+
+      setOpenDeleteAlert(false);
+      toast.success("Task details deleted successfully");
+      navigate("/admin/tasks");
+    } catch (error) {
+      console.error(
+        "Error deleting Task:",
+        error.response?.data?.message || error.message
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (taskId) {
       console.log("taskId:", taskId); // Debug
-    getTaskByID(taskId);
-  }
-}, [taskId]);
+      getTaskByID(taskId);
+    }
+  }, [taskId]);
 
   return (
     <DashboardLayout activeMenu="Create Task">
@@ -360,9 +361,15 @@ const CraeteTask = () => {
         </div>
       </div>
 
-      <Modal isOpen={openDeleteAlert} onClose={()=> setOpenDeleteAlert(false)}
-      title='Delete Task'>
-        <DeleteAlert content='Are you sure you want to delete this task?' onDelete={()=> deleteTask()}/>
+      <Modal
+        isOpen={openDeleteAlert}
+        onClose={() => setOpenDeleteAlert(false)}
+        title="Delete Task"
+      >
+        <DeleteAlert
+          content="Are you sure you want to delete this task?"
+          onDelete={() => deleteTask()}
+        />
       </Modal>
     </DashboardLayout>
   );

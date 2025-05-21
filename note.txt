@@ -1,24 +1,52 @@
-View Task details page.
+Fixed attachment bug.
 
-SUMMARY (20 lines):
-1. ViewTaskDetails component displays detailed information about a specific task
-2. Uses task ID from URL params to fetch data from API
-3. Manages task state with useState hook
-4. Implements status-based styling with getStatusTagColor function
-5. Fetches task details in getTaskDetailsById function
-6. Handles attachment clicks with proper URL formatting
-7. Uses DashboardLayout as the main container
-8. Displays task title with status badge
-9. Shows task description in InfoBox component
-10. Displays priority, formatted due date, and assigned users
-11. Uses AvatarGroup to show assignee profile pictures
-12. Renders todo checklist with checkboxes (update functionality pending)
-13. Lists attachments as clickable links that open in new tabs
-14. Includes helper components: InfoBox, TodoChecklist, Attachment
-15. InfoBox displays label-value pairs consistently
-16. TodoChecklist shows checkbox with task text
-17. Attachment component formats links with numbering and external link icon
-18. Responsive design with grid layouts for different screen sizes
-19. Uses moment.js for date formatting
-20. Handles potential missing data with optional chaining
-*/
+the issue was i used attachements in backend while using attachments in frontend so i chaned the attachements in task model to attachments.
+
+then for a go ux experience and validation and worked on AddAttachmentsIput componenet 
+
+Key Improvements:
+URL Validation:
+
+Added proper URL validation with isValidUrl function
+
+Automatically adds https:// prefix if missing
+
+Error Handling:
+
+Added error state to show validation messages
+
+Clear errors when user starts typing
+
+User Experience:
+
+Added support for Enter key submission
+
+Disabled "Add" button when input is empty
+
+Added truncation for long URLs with full URL in tooltip
+
+Added help text about supported URLs
+
+Accessibility:
+
+Added aria-label to delete buttons
+
+Improved keyboard navigation
+
+Code Quality:
+
+Added JSDoc comments
+
+Better prop destructuring with default value
+
+More descriptive key names
+
+Visual Improvements:
+
+Better spacing and alignment
+
+Overflow handling for long URLs
+
+Clearer placeholder text
+
+This enhanced version will prevent invalid URLs from being added and provide better feedback to users when they enter attachments.
