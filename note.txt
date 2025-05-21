@@ -1,14 +1,24 @@
-My Task Page UI and Api Integration to fetch my task
+View Task details page.
 
-
-### 10-Line Summary:
-1. MyTasks component displays user tasks in a dashboard layout
-2. Uses state to manage tasks list, filter tabs, and active status filter
-3. Fetches tasks from API using axiosInstance with status filter parameter
-4. Processes API response to create status summary for filter tabs
-5. Implements filter functionality through TaskStatusTab component
-6. Displays tasks in responsive grid layout using TaskCard components
-7. Each TaskCard shows task details like title, priority, due date etc.
-8. Handles task card clicks to navigate to task details page
-9. Automatically refreshes data when filter status changes (useEffect)
-10. Includes error handling for API requests and empty states
+SUMMARY (20 lines):
+1. ViewTaskDetails component displays detailed information about a specific task
+2. Uses task ID from URL params to fetch data from API
+3. Manages task state with useState hook
+4. Implements status-based styling with getStatusTagColor function
+5. Fetches task details in getTaskDetailsById function
+6. Handles attachment clicks with proper URL formatting
+7. Uses DashboardLayout as the main container
+8. Displays task title with status badge
+9. Shows task description in InfoBox component
+10. Displays priority, formatted due date, and assigned users
+11. Uses AvatarGroup to show assignee profile pictures
+12. Renders todo checklist with checkboxes (update functionality pending)
+13. Lists attachments as clickable links that open in new tabs
+14. Includes helper components: InfoBox, TodoChecklist, Attachment
+15. InfoBox displays label-value pairs consistently
+16. TodoChecklist shows checkbox with task text
+17. Attachment component formats links with numbering and external link icon
+18. Responsive design with grid layouts for different screen sizes
+19. Uses moment.js for date formatting
+20. Handles potential missing data with optional chaining
+*/
