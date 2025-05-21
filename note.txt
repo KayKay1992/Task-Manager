@@ -1,52 +1,16 @@
-Fixed attachment bug.
+API call to update task status and todo checklist.
 
-the issue was i used attachements in backend while using attachments in frontend so i chaned the attachements in task model to attachments.
+Here's a 10-line summary of your `updateTodoChecklist` function:
 
-then for a go ux experience and validation and worked on AddAttachmentsIput componenet 
+1. Toggles completion status of a todo item at given index  
+2. Creates copy of current checklist from task state  
+3. Verifies checklist and index exist  
+4. Inverts completed status for specified todo item  
+5. Makes API call to update checklist on server  
+6. On success (200), updates task state with response data  
+7. On failure, reverts local toggle change  
+8. Handles both API errors and non-200 responses  
+9. Maintains data consistency between UI and backend  
+10. Uses task ID from URL params for API endpoint  
 
-Key Improvements:
-URL Validation:
-
-Added proper URL validation with isValidUrl function
-
-Automatically adds https:// prefix if missing
-
-Error Handling:
-
-Added error state to show validation messages
-
-Clear errors when user starts typing
-
-User Experience:
-
-Added support for Enter key submission
-
-Disabled "Add" button when input is empty
-
-Added truncation for long URLs with full URL in tooltip
-
-Added help text about supported URLs
-
-Accessibility:
-
-Added aria-label to delete buttons
-
-Improved keyboard navigation
-
-Code Quality:
-
-Added JSDoc comments
-
-Better prop destructuring with default value
-
-More descriptive key names
-
-Visual Improvements:
-
-Better spacing and alignment
-
-Overflow handling for long URLs
-
-Clearer placeholder text
-
-This enhanced version will prevent invalid URLs from being added and provide better feedback to users when they enter attachments.
+Key behaviors: optimistic UI update with rollback on failure.
