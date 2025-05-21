@@ -1,4 +1,14 @@
-USER DASHBOARD WITH SUMMARY CARD AND CHARTS
+My Task Page UI and Api Integration to fetch my task
 
-Cpied the adminDashboard to userDashboard component and rename the route. for the task.get_user_dashboard data
 
+### 10-Line Summary:
+1. MyTasks component displays user tasks in a dashboard layout
+2. Uses state to manage tasks list, filter tabs, and active status filter
+3. Fetches tasks from API using axiosInstance with status filter parameter
+4. Processes API response to create status summary for filter tabs
+5. Implements filter functionality through TaskStatusTab component
+6. Displays tasks in responsive grid layout using TaskCard components
+7. Each TaskCard shows task details like title, priority, due date etc.
+8. Handles task card clicks to navigate to task details page
+9. Automatically refreshes data when filter status changes (useEffect)
+10. Includes error handling for API requests and empty states
