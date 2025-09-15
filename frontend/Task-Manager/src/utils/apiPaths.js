@@ -1,4 +1,6 @@
-export const BASE_URL = "http://localhost:8000";
+
+
+export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 //utils /apiPaths.js
 export const API_PATHS = {
@@ -10,9 +12,9 @@ export const API_PATHS = {
   USERS: {
     GET_ALL_USERS: "/api/users", //get all users admin only
     GET_USER_BY_ID: (userId) => `/api/users/${userId}`,
-    CREATE_USER: "api/users", //admin create a new user
-    UPDATE_USER: (userId) => `api/users/${userId}`, //update user details
-    DELETE_USER: (userId) => `api/users/${userId}`, //delete user
+    CREATE_USER: "/api/users", //admin create a new user
+    UPDATE_USER: (userId) => `/api/users/${userId}`, //update user details
+    DELETE_USER: (userId) => `/api/users/${userId}`, //delete user
   },
   TASKS: {
     GET_DASHBOARD_DATA: "/api/tasks/dashboard-data", //get dashboard data
