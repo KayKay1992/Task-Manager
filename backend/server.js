@@ -40,7 +40,7 @@ app.use('/api/tasks', taskRoutes);
 app.use('/api/reports', reportRoutes);
 
 // Serve static files for uploads
-app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Error-handling middleware
 app.use((err, req, res, next) => {
