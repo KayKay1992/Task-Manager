@@ -10,34 +10,41 @@ const reportRoutes = require('./routes/reportRoutes');
 
 const app = express();
 
-// Middleware to handle cors
+// Middleware to handle CORS
 app.use(cors({
-    origin: process.env.CLIENT_URL || '*',
-    methods: ['GET', 'POST','PUT','DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: process.env.CLIENT_URL || 'http://localhost:3000', // Specify frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // Connect database
 connectDB();
 
-//Middleware
+// Middleware
 app.use(express.json());
 
-//server static files
-// app.use('/uploads', express.static('uploads'));
+// Root route for testing
+app.get('/', (req, res) => {
+  res.send('Task Manager Backend is running!');
+});
 
-//Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/tasks", taskRoutes);
-app.use("/api/reports", reportRoutes);
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/tasks', taskRoutes);
+app.use('/api/reports', reportRoutes);
 
+// Serve static files for uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-//saves upload folder
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+// Error-handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
+});
 
-//start server
-const PORT = process.env.PORT || 5000;
+// Start server
+const PORT = process.env.PORT || 8000; // Align with Render's log
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
