@@ -12,9 +12,14 @@ const app = express();
 
 // Middleware to handle CORS
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000', // Specify frontend URL
+  origin: [
+    process.env.CLIENT_URL,
+    'http://localhost:3000',
+    'https://task-manager-8gjj.onrender.com'
+  ].filter(Boolean), // Remove undefined values
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true // Optional, include if needed
 }));
 
 // Connect database
@@ -35,7 +40,7 @@ app.use('/api/tasks', taskRoutes);
 app.use('/api/reports', reportRoutes);
 
 // Serve static files for uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
 
 // Error-handling middleware
 app.use((err, req, res, next) => {
@@ -44,7 +49,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 8000; // Align with Render's log
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
